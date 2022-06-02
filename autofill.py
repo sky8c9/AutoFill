@@ -18,7 +18,7 @@ def task():
     dict = {941 : Input941.SHEET, 940 : Input940.SHEET}
     form = int(input("Enter form: "))
 
-    df = pd.read_excel(dict[form])
+    df = pd.read_excel(dict[form], dtype=str)
     if df.empty:
         print("Empty Data File !!!")
         return
@@ -27,7 +27,7 @@ def task():
     for index, rowData in df.iterrows():
         if form == 941:
             tasks.append(Form941(rowData))
-        else:
+        elif form == 940:
             tasks.append(Form940(rowData))
 
     menu()
@@ -35,7 +35,8 @@ def task():
     if (option == 3):
         os.makedirs(Form.report_folder_name)
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            results = list(executor.map(Form941.fill, tasks)) if form == 941 else list(executor.map(Form940.fill, tasks))
+            for idx, task in enumerate(tasks):
+                executor.submit(task.fill)
     elif (option == 2):
         tasks[0].viewFormMapping()  
     elif (option == 1):

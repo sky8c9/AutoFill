@@ -52,7 +52,7 @@ class Form():
             for field in field_dict:
                 if writer_annot.get("/T") == field:
                     writer_annot.update({
-                        NameObject("/V"): NameObject(field_dict[field]),
+                        NameObject("/V"): NameObject(field_dict[field])
                     })
 
     def viewFormMapping(self):
