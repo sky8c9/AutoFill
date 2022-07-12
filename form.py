@@ -25,7 +25,8 @@ class Form():
         print(f"{entity} Done!!!")
 
     def reportVal(self, val):
-        return str(format(float(val), ".2f")).split(".")
+        val = round(float(val) * 100.0) / 100.0
+        return str(format(val, ".2f")).split(".")
 
     def setField(self, loc, dataBlock, adjustment=0):
         pNum, offset = loc
