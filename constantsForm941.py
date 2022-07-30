@@ -27,8 +27,6 @@ class MetaDataLoc:
     PART2_LOC = [2, 34]
     PART4_LOC = [3, 24]
     PART5_LOC = [3, 27]
-    HEADER1_LOC = [2, 1]
-    HEADER2_LOC = [3, 1]
     VOUCHER_LOC = [4, 1]
 
 class LineLoc:

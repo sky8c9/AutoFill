@@ -98,12 +98,8 @@ class Form941(Form):
             self.setCheckBox(CheckBoxLoc.OVERPAYMENT_CHECKBOX, 2, 2)
 
     def fillMeta(self):        
-        # Company
-        self.setField(MetaDataLoc.COMPANY_LOC, [self.ein.split("-"), [self.legal_name], [self.trade_name], self.address.split(", ")])
-
-        # Header
-        self.setField(MetaDataLoc.HEADER1_LOC, [[self.legal_name], [self.ein]])
-        self.setField(MetaDataLoc.HEADER2_LOC, [[self.legal_name], [self.ein]])
+        # Company - Meta data may span over multiple pages (set mutiplePages flag to true)
+        self.setField(MetaDataLoc.COMPANY_LOC, [self.ein.split("-"), [self.legal_name], [self.trade_name], self.address.split(", ")], multiplePages=True)
 
         # PART 4 - 3rd party designee contact
         if ThirdParty.THIRD_PARTY_DESIGNEE:

@@ -28,7 +28,7 @@ class Form():
         val = round(float(val) * 100.0) / 100.0
         return str(format(val, ".2f")).split(".")
 
-    def setField(self, loc, dataBlock, adjustment=0):
+    def setField(self, loc, dataBlock, adjustment=0, multiplePages=False):
         pNum, offset = loc
         field_dictionary = dict()
         
@@ -37,7 +37,14 @@ class Form():
                 field_dictionary[f"f{pNum}_{offset}[0]"] = element
                 offset += 1
 
-        self.pdf_writer.updatePageFormFieldValues(self.pdf_writer.getPage(pNum - 1 + adjustment), field_dictionary)
+        if multiplePages: # Set fields on all pages
+            for page in self.pdf_reader.pages:
+                try :
+                    self.pdf_writer.update_page_form_field_values(page, field_dictionary)
+                except : 
+                    pass
+        else: # Single page case
+            self.pdf_writer.update_page_form_field_values(self.pdf_reader.getPage(pNum - 1 + adjustment), field_dictionary)
 
     def setCheckBox(self, loc, choice, num_choices, adjustment=0):
         pNum, offset = loc
