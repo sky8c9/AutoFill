@@ -17,15 +17,6 @@ def menu():
     print("-----------------------------")
 
 def task():
-    '''
-    os.makedirs(Form.report_folder_name)
-    df = pd.read_excel(Input941x.SHEET)
-    print(df)
-    for index, rowData in df.iterrows():
-        test = Form941x(rowData)
-        test.fill()
-        #test.viewFormMapping()
-    '''
     dict = {"941" : Input941.SHEET, "941x" : Input941x.SHEET, "940" : Input940.SHEET}
     form = input("Enter form: ")
 
