@@ -17,6 +17,12 @@ class Form941(Form):
         self.taxFill()
         self.output(Input.FORM, self.trade_name)
 
+    def fieldFormat(self, pNum, offset):
+        return f"f{pNum}_{offset}[0]"
+
+    def checkBoxFormat(self, pNum, offset, index):
+        return f"c{pNum}_{offset}[{index}]"
+
     def part2(self, total_tax, total_deposit):
         if self.scheduleB == 'y' or self.scheduleB == 'Y':
             self.setCheckBox(CheckBoxLoc.PART2_CHECKBOX, 3, 3)

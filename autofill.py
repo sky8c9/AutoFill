@@ -1,10 +1,12 @@
 import os
 import concurrent.futures
 from form941 import Form941
+from form941x import Form941x
 from form940 import Form940
 from form import Form
 from constantsForm941 import Input as Input941
 from constantsForm940 import Input as Input940
+from constantsForm941x import Input as Input941x
 import pandas as pd
 
 def menu():
@@ -15,8 +17,17 @@ def menu():
     print("-----------------------------")
 
 def task():
-    dict = {941 : Input941.SHEET, 940 : Input940.SHEET}
-    form = int(input("Enter form: "))
+    '''
+    os.makedirs(Form.report_folder_name)
+    df = pd.read_excel(Input941x.SHEET)
+    print(df)
+    for index, rowData in df.iterrows():
+        test = Form941x(rowData)
+        test.fill()
+        #test.viewFormMapping()
+    '''
+    dict = {"941" : Input941.SHEET, "941x" : Input941x.SHEET, "940" : Input940.SHEET}
+    form = input("Enter form: ")
 
     df = pd.read_excel(dict[form], dtype=str)
     if df.empty:
@@ -25,10 +36,12 @@ def task():
 
     tasks = []
     for index, rowData in df.iterrows():
-        if form == 941:
+        if form == "941":
             tasks.append(Form941(rowData))
-        elif form == 940:
+        elif form == "940":
             tasks.append(Form940(rowData))
+        elif form == "941x":
+            tasks.append(Form941x(rowData))
 
     menu()
     option = int(input("Select: "))

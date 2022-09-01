@@ -17,6 +17,12 @@ class Form940(Form):
         self.taxFill()
         self.output(Input.FORM, self.trade_name)
 
+    def fieldFormat(self, pNum, offset):
+        return f"f{pNum}_{offset}[0]"
+
+    def checkBoxFormat(self, pNum, offset, index):
+        return f"c{pNum}_{offset}[{index}]"
+
     def taxFill(self): 
         # Line 1a
         self.setField(LineLoc.LINE1A, [self.futa_state])

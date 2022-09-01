@@ -18,6 +18,14 @@ class Form():
     def fill(self):
         pass
 
+    @abstractclassmethod
+    def fieldFormat(self, pNum, offset):
+        pass
+
+    @abstractclassmethod
+    def checkBoxFormat(self, pNum, offset, index):
+        pass
+
     def output(self, form, entity):
         outputStream = open(f"{Form.report_folder_name}/{entity} - {form}.pdf", "wb")
         self.pdf_writer.write(outputStream)
@@ -34,7 +42,8 @@ class Form():
         
         for field in dataBlock:
             for element in field:
-                field_dictionary[f"f{pNum}_{offset}[0]"] = element
+                key = self.fieldFormat(pNum, offset)
+                field_dictionary[key] = element
                 offset += 1
 
         if multiplePages: # Set fields on all pages
@@ -51,7 +60,8 @@ class Form():
         field_dict = dict()
 
         for i in range(num_choices):
-            field_dict[f"c{pNum}_{offset}[{i}]"] = f"/{choice}"
+            key = self.checkBoxFormat(pNum, offset, i)
+            field_dict[key] = f"/{choice}"
 
         page = self.pdf_reader.getPage(pNum - 1 + adjustment)
         for i in range(0, len(page["/Annots"])):
