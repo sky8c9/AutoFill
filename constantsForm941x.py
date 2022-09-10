@@ -22,6 +22,7 @@ class LineLoc:
     LINE23 = [3, 139]
     LINE26A = [3, 157]
     LINE27 = [3, 181]
+    LINE30 = [3, 195]
 
 class CheckBoxLoc:
     TAX_QUARTER_CHECKBOX = [1, 2]

@@ -26,19 +26,22 @@ class Form941x(Form):
     # Testing erc
     def erc(self):
         # Line 18a
-        nonref = self.tax_info["Corrected"] * Tax.NON_REF_RATE
+        nonref = self.tax_info["Total_Wages"] * Tax.NON_REF_RATE
         self.setField(LineLoc.LINE18A, [self.reportVal(nonref), self.reportVal(0), self.reportVal(nonref), self.reportVal(-1*nonref)])
 
         # Line 23
         self.setField(LineLoc.LINE23, [self.reportVal(-1*nonref)])
 
         # Line 26a
-        erc_ref = self.tax_info["Corrected"] * Tax.ERC_RATE[int(self.year)] - nonref
+        erc_ref = self.tax_info["Qualified_Wages"] * Tax.ERC_RATE[int(self.year)] - nonref
         self.setField(LineLoc.LINE26A, [self.reportVal(erc_ref), self.reportVal(0), self.reportVal(erc_ref), self.reportVal(-1*erc_ref)])
 
         # Line 27
         erc = erc_ref + nonref
         self.setField(LineLoc.LINE27, [self.reportVal(-1*erc)])
+
+        # Line 30
+        self.setField(LineLoc.LINE30, [self.reportVal(self.tax_info["Qualified_Wages"]), self.reportVal(0), self.reportVal(self.tax_info["Qualified_Wages"])])
 
     def fillMeta(self):        
         # Company - Meta data may span over multiple pages (set mutiplePages flag to true)
