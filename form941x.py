@@ -18,10 +18,10 @@ class Form941x(Form):
         self.output(Input.FORM, self.trade_name)
 
     def fieldFormat(self, pNum, offset):
-        return f"f{pNum}_0{offset}[0]" if offset < 10 else f"f{pNum}_{offset}[0]"
+        return f"f{pNum}_{str(offset).zfill(2)}[0]"
 
     def checkBoxFormat(self, pNum, offset, index):
-        return f"c{pNum}_0{offset}[{index}]" if offset < 10 else f"c{pNum}_{offset}[{index}]"
+        return f"c{pNum}_{str(offset).zfill(2)}[{index}]"
 
     # Testing erc
     def erc(self):

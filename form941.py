@@ -1,5 +1,6 @@
 from constantsForm941 import Input, Tax, ThirdParty, Preparer, MetaDataLoc, LineLoc, CheckBoxLoc
 from form import Form
+from form941sb import Form941sb
 
 class Form941(Form):
     def __init__(self, data):
@@ -7,9 +8,12 @@ class Form941(Form):
 
         # Entity metadata
         self.quarter, self.scheduleB, self.ein, self.legal_name, self.trade_name, self.address, self.sign, self.employee_count = data.iloc[0:Tax.TAX_INFO_COLUMN_START].fillna("").astype(str)
-        
-        # Tax info starting column
-        self.tax_info = data.iloc[Tax.TAX_INFO_COLUMN_START:].fillna(0).astype(float)
+
+        # Tax info
+        self.tax_info = data.iloc[Tax.TAX_INFO_COLUMN_START:-3].fillna(0).astype(float)
+
+        # Deposit info
+        self.deposit_info = data.iloc[-3:]
 
     def fill(self):
         print(f"{self.trade_name} - 941 ...")
@@ -25,17 +29,23 @@ class Form941(Form):
 
     def part2(self, total_tax, total_deposit):
         if self.scheduleB == 'y' or self.scheduleB == 'Y':
-            self.setCheckBox(CheckBoxLoc.PART2_CHECKBOX, 3, 3)
+            self.setCheckBox(CheckBoxLoc.PART2_CHECKBOX, 3, 3)      
         elif total_tax < 2500 and total_deposit == 0:
             self.setCheckBox(CheckBoxLoc.PART2_CHECKBOX, 1, 3)
         elif total_deposit > 0:
-            part2 = [self.reportVal(self.tax_info["Deposit_1"]), self.reportVal(self.tax_info["Deposit_2"]), self.reportVal(self.tax_info["Deposit_3"]), self.reportVal(total_deposit)]
+            part2 = [self.reportVal(self.deposit_info["Deposit_1"]), self.reportVal(self.deposit_info["Deposit_2"]), self.reportVal(self.deposit_info["Deposit_3"]), self.reportVal(total_deposit)]
             self.setField(MetaDataLoc.PART2_LOC, part2)
             self.setCheckBox(CheckBoxLoc.PART2_CHECKBOX, 2, 3)
 
     def taxFill(self): 
-        total_deposit = self.tax_info["Deposit_1"] + self.tax_info["Deposit_2"] + self.tax_info["Deposit_3"]
-
+        if (self.scheduleB == 'y' or self.scheduleB == 'Y'):
+            form941sb = Form941sb([self.quarter, self.ein, self.trade_name, self.legal_name, self.deposit_info])
+            form941sb.fill()
+            total_deposit = form941sb.schedB_total_deposit
+        else:
+            self.deposit_info = self.deposit_info.fillna(0).astype(float)
+            total_deposit = self.deposit_info["Deposit_1"] + self.deposit_info["Deposit_2"] + self.deposit_info["Deposit_3"]
+        
         # Line 6
         total_tax = self.totalTax()
         self.setField(LineLoc.LINE6, [self.reportVal(total_tax)])
