@@ -14,20 +14,19 @@ class Preparer:
 
 class MetaDataLoc:
     COMPANY_LOC = [1, 1]
-    HEADER1_LOC = [2, 1]
-    PART6_LOC = [2, 13]
-    PART7_LOC = [2, 16]
+    PART6_LOC = [2, 11]
+    PART7_LOC = [2, 14]
     VOUCHER_LOC = [3, 1]
 
 class LineLoc:
-    LINE1A = [1, 19]
-    LINE3 = [1, 21]
-    LINE4 = [1, 23]
-    LINE5 = [1, 25]
-    LINE6 = [1, 27]
-    LINE12 = [1, 39]
-    LINE14 = [1, 43]
-    LINE15 = [1, 45]
+    LINE1A = [1, 12]
+    LINE3 = [1, 14]
+    LINE4 = [1, 16]
+    LINE5 = [1, 18]
+    LINE6 = [1, 20]
+    LINE12 = [1, 32]
+    LINE14 = [1, 36]
+    LINE15 = [1, 38]
 
 class CheckBoxLoc:
     PART6_THIRD_PARTY_CHECKBOX = [2, 1]

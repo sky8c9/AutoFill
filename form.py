@@ -1,3 +1,4 @@
+import logging
 from abc import abstractclassmethod
 from PyPDF2 import PdfFileWriter, PdfFileReader
 from PyPDF2.generic import NameObject
@@ -6,8 +7,11 @@ from datetime import datetime
 
 class Form():
     report_folder_name = datetime.now(timezone('US/Pacific')).strftime("%m-%d-%y_%H_%M_%S")
-
+    
     def __init__(self, form):
+        # suppress warning messages from pypdf2 lib at runtime
+        logging.disable()
+        
         self.pdf_reader = PdfFileReader(open(form, "rb"))
         self.pdf_writer = PdfFileWriter()
 

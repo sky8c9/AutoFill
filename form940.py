@@ -18,7 +18,7 @@ class Form940(Form):
         self.output(Input.FORM, self.trade_name)
 
     def fieldFormat(self, pNum, offset):
-        return f"f{pNum}_{offset}[0]"
+        return f"f{pNum}_{str(offset).zfill(2)}[0]"
 
     def checkBoxFormat(self, pNum, offset, index):
         return f"c{pNum}_{offset}[{index}]"
@@ -64,30 +64,26 @@ class Form940(Form):
 
         if tax_balance > 0: # Create payment voucher
             self.setField(LineLoc.LINE14, [self.reportVal(tax_balance)])
-            self.setField(MetaDataLoc.VOUCHER_LOC, [[self.ein], self.reportVal(tax_balance), [self.legal_name], [street], [other]])
+            self.setField(MetaDataLoc.VOUCHER_LOC, [self.reportVal(tax_balance), [self.legal_name], [street], [other]])
         elif tax_balance < 0: # Over payment - Send a refund as default option
             self.setField(LineLoc.LINE15, [self.reportVal(abs(tax_balance))])
-            self.setCheckBox(CheckBoxLoc.OVERPAYMENT_CHECKBOX, "Send", 2)
+            self.setCheckBox(CheckBoxLoc.OVERPAYMENT_CHECKBOX, 2, 2)
 
     def fillMeta(self):        
         # Company
-        ein_reformat = [c for c in list(self.ein) if c != "-"]
-        self.setField(MetaDataLoc.COMPANY_LOC, [ein_reformat, [self.legal_name], [self.trade_name], self.address.split(", ")])
-
-        # Header
-        self.setField(MetaDataLoc.HEADER1_LOC, [[self.legal_name], [self.ein]])
+        self.setField(MetaDataLoc.COMPANY_LOC, [self.ein.split("-"), [self.legal_name], [self.trade_name], self.address.split(", ")], multiplePages=True)
 
         # PART 6 - 3rd party designee contact
         if ThirdParty.THIRD_PARTY_DESIGNEE:
-            self.setCheckBox(CheckBoxLoc.PART6_THIRD_PARTY_CHECKBOX, "Yes", 2)
+            self.setCheckBox(CheckBoxLoc.PART6_THIRD_PARTY_CHECKBOX, 1, 2)
             self.setField(MetaDataLoc.PART6_LOC, ThirdParty.THIRD_PARTY_DESIGNEE)
         else:
-            self.setCheckBox(CheckBoxLoc.PART6_THIRD_PARTY_CHECKBOX, "No", 2)
+            self.setCheckBox(CheckBoxLoc.PART6_THIRD_PARTY_CHECKBOX, 2, 2)
 
-        # PART 5 - Sign
+        # PART 7 - Sign
         self.setField(MetaDataLoc.PART7_LOC, [self.sign.split(", ")])
         
-        # PART 5 - Paid Preparer
+        # PART 7 - Paid Preparer
         if Preparer.PREPARER_INFO:
             pnum, offset = MetaDataLoc.PART7_LOC
             self.setCheckBox(CheckBoxLoc.PART7_PAID_PREPARER_CHECKBOX, 1, 1)
