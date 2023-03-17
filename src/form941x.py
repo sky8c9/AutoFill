@@ -15,7 +15,7 @@ class Form941x(Form):
         print(f"{self.trade_name} - 941X ...")
         self.fillMeta()
         self.erc()
-        self.output(Input.FORM, self.trade_name)
+        self.output("f941x", self.trade_name)
 
     def fieldFormat(self, pNum, offset):
         return f"f{pNum}_{str(offset).zfill(2)}[0]"

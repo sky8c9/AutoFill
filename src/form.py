@@ -31,7 +31,7 @@ class Form():
         pass
 
     def output(self, form, entity):
-        outputStream = open(f"{Form.report_folder_name}/{entity} - {form}.pdf", "wb")
+        outputStream = open(f"../{Form.report_folder_name}/{entity} - {form}.pdf", "wb")
         self.pdf_writer.write(outputStream)
         outputStream.close()
         print(f"{entity} Done!!!")

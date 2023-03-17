@@ -1,6 +1,6 @@
 class Input:
-    FORM = "f941.pdf"
-    SHEET = "941_data_template.xlsx"
+    FORM = "../form/f941.pdf"
+    SHEET = "../template/941_data_template.xlsx"
 
 class Tax:
     TAX_INFO_COLUMN_START = 8
@@ -27,7 +27,7 @@ class MetaDataLoc:
     PART2_LOC = [2, 34]
     PART4_LOC = [3, 24]
     PART5_LOC = [3, 27]
-    VOUCHER_LOC = [4, 1]
+    VOUCHER_LOC = [5, 1]
 
 class LineLoc:
     LINE1 = [1, 12]
@@ -47,4 +47,4 @@ class CheckBoxLoc:
     PART2_CHECKBOX = [2, 2]
     PART4_THIRD_PARTY_CHECKBOX = [3, 4]
     PART5_PAID_PREPARER_CHECKBOX = [3, 5]
-    PAYMENT_VOUCHER_CHECKBOX = [4, 1]
+    PAYMENT_VOUCHER_CHECKBOX = [5, 1]

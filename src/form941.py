@@ -19,7 +19,7 @@ class Form941(Form):
         print(f"{self.trade_name} - 941 ...")
         self.fillMeta()
         self.taxFill()
-        self.output(Input.FORM, self.trade_name)
+        self.output("f941", self.trade_name)
 
     def fieldFormat(self, pNum, offset):
         return f"f{pNum}_{offset}[0]"
@@ -105,10 +105,8 @@ class Form941(Form):
 
         if tax_balance > 0: # Create payment voucher
             self.setField(LineLoc.LINE14, [self.reportVal(tax_balance)])
-
-            # adjustment needed when field index doesnt line up with its page number
-            self.setField(MetaDataLoc.VOUCHER_LOC, [[self.ein], self.reportVal(tax_balance), [self.legal_name], [street], [other]], 1)
-            self.setCheckBox(CheckBoxLoc.PAYMENT_VOUCHER_CHECKBOX, self.quarter, 4, 1)
+            self.setField(MetaDataLoc.VOUCHER_LOC, [[self.ein], self.reportVal(tax_balance), [self.legal_name], [street], [other]])
+            self.setCheckBox(CheckBoxLoc.PAYMENT_VOUCHER_CHECKBOX, self.quarter, 4)
         elif tax_balance < 0: # Over payment - Send a refund as default option
             self.setField(LineLoc.LINE15, [self.reportVal(abs(tax_balance))])
             self.setCheckBox(CheckBoxLoc.OVERPAYMENT_CHECKBOX, 2, 2)
@@ -132,5 +130,3 @@ class Form941(Form):
             pnum, offset = MetaDataLoc.PART5_LOC
             self.setCheckBox(CheckBoxLoc.PART5_PAID_PREPARER_CHECKBOX, 1, 1)
             self.setField([pnum, offset + 3], Preparer.PREPARER_INFO)
-
-

@@ -13,7 +13,7 @@ class Form941sb(Form):
         print(f"{self.trade_name} - 941sb ...")
         self.fillMeta()
         self.taxFill()
-        self.output(Input.FORM, self.trade_name + "_schedB")
+        self.output("f941sb", self.trade_name + "_schedB")
 
     def fieldFormat(self, pNum, offset):
         return f"f{pNum}_{str(offset).zfill(3)}_0_[0]"

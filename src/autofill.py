@@ -37,7 +37,7 @@ def task():
     menu()
     option = int(input("Select: "))
     if (option == 3):
-        os.makedirs(Form.report_folder_name)
+        os.makedirs(f"../{Form.report_folder_name}")
         with concurrent.futures.ThreadPoolExecutor() as executor:
             for idx, task in enumerate(tasks):
                 executor.submit(task.fill)
@@ -46,8 +46,5 @@ def task():
     elif (option == 1):
         print(df)
 
-def main():
-    task()
-
 if __name__ == "__main__":
-	main()
+    task()

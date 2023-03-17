@@ -1,6 +1,6 @@
 class Input:
-    FORM = "f941x.pdf"
-    SHEET = "941X_data_template.xlsx"
+    FORM = "../form/f941x.pdf"
+    SHEET = "../template/941X_data_template.xlsx"
 
 class Tax:
     TAX_INFO_COLUMN_START = 8

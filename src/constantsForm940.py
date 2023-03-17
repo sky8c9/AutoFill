@@ -1,6 +1,6 @@
 class Input:
-    FORM = "f940.pdf"
-    SHEET = "940_data_template.xlsx"
+    FORM = "../form/f940.pdf"
+    SHEET = "../template/940_data_template.xlsx"
 
 class Tax:
     TAX_INFO_COLUMN_START = 6
