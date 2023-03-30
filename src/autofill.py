@@ -27,12 +27,7 @@ def task():
 
     tasks = []
     for index, rowData in df.iterrows():
-        if form == "941":
-            tasks.append(Form941(rowData))
-        elif form == "940":
-            tasks.append(Form940(rowData))
-        elif form == "941x":
-            tasks.append(Form941x(rowData))
+        tasks.append(globals()[f"Form{form}"](rowData))
 
     menu()
     option = int(input("Select: "))
