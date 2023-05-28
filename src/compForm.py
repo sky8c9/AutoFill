@@ -1,7 +1,6 @@
 import os
 import concurrent.futures
 import time
-import importlib
 import numpy as np
 import pandas as pd
 from constantsCompForm import Constants
@@ -125,7 +124,7 @@ class FormW2(CompForm):
 
         # test tax relations & calculations accuracy
         assert ss_wage + ss_tip > ss_tax and abs((ss_wage + ss_tip) * self.cls_consts.SS_RATE_22 - ss_tax) < self.cls_consts.EPSILON, f'Error!!! {self.payer_name} - {payee_name}: Social security tax is incorrect'
-        assert med_wage + ss_tip > med_tax and abs((med_wage + ss_tip) * self.cls_consts.MC_RATE_22 - med_tax) < self.cls_consts.EPSILON, f'Error!!! {self.payer_name} - {payee_name}: Medicare tax is incorrect'
+        assert med_wage > med_tax and abs(med_wage * self.cls_consts.MC_RATE_22 - med_tax) < self.cls_consts.EPSILON, f'Error!!! {self.payer_name} - {payee_name}: Medicare tax is incorrect'
 
 class Form1099NEC(CompForm):
     pass

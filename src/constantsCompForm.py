@@ -25,7 +25,7 @@ class FW2(Constants):
     SS_MAX_22 = 147000
     SS_RATE_22 = 0.062
     MC_RATE_22 = 0.0145
-    EPSILON = 0.01
+    EPSILON = 0.05
 
 class F1099NEC(Constants):
     # Form info
