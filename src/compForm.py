@@ -119,12 +119,12 @@ class FormW2(CompForm):
 
         # test amount & cap
         assert fed_w <= earning, f'Error!!! {self.payer_name} - {payee_name}: Federal tax withholding is greater earning'
-        assert ss_wage + ss_tip <= self.cls_consts.SS_MAX_22, f'Error!!! {self.payer_name} - {payee_name}: Social wages + tip cant be greater than {self.cls_consts.SS_MAX_22}'
+        assert ss_wage <= self.cls_consts.SS_MAX, f'Error!!! {self.payer_name} - {payee_name}: Social wages cant be greater than {self.cls_consts.SS_MAX}'
         assert med_wage >= ss_wage, f'Error!!! {self.payer_name} - {payee_name}: Medicare wages cant be smaller than Social security wages'
 
         # test tax relations & calculations accuracy
-        assert ss_wage + ss_tip > ss_tax and abs((ss_wage + ss_tip) * self.cls_consts.SS_RATE_22 - ss_tax) < self.cls_consts.EPSILON, f'Error!!! {self.payer_name} - {payee_name}: Social security tax is incorrect'
-        assert med_wage > med_tax and abs(med_wage * self.cls_consts.MC_RATE_22 - med_tax) < self.cls_consts.EPSILON, f'Error!!! {self.payer_name} - {payee_name}: Medicare tax is incorrect'
+        assert ss_wage + ss_tip > ss_tax and abs(min(self.cls_consts.SS_MAX, ss_wage + ss_tip) * self.cls_consts.SS_RATE - ss_tax) < self.cls_consts.EPSILON, f'Error!!! {self.payer_name} - {payee_name}: Social security tax is incorrect'
+        assert med_wage > med_tax and abs(med_wage * self.cls_consts.MC_RATE - med_tax) < self.cls_consts.EPSILON, f'Error!!! {self.payer_name} - {payee_name}: Medicare tax is incorrect'
 
 class Form1099NEC(CompForm):
     pass
