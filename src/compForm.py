@@ -1,12 +1,10 @@
-import os
-import concurrent.futures
-import time
+import os, concurrent.futures, time, glob, shutil
 import numpy as np
 import pandas as pd
 from constantsCompForm import Constants
 from abc import abstractclassmethod
-from multiprocessing import Pool
 from PyPDF2 import PdfReader, PdfWriter
+from pdf2image import convert_from_path
 
 class CompForm():
     def __init__(self, fname, cls_consts):
@@ -80,9 +78,8 @@ class CompForm():
 
         # write to files
         writer.update_page_form_field_values(writer.pages[0], field_dictionary)
-        outputStream = open(f'{self.cls_consts.OUT}/{payer}/{payee_name} - {self.cls_consts.FORM_NAME}.pdf', 'wb')
-        writer.write(outputStream)
-        outputStream.close()
+        with open(f'{self.cls_consts.OUT}/{payer}/{payee_name} - {self.cls_consts.FORM_NAME}.pdf', 'wb') as outfile:
+            writer.write(outfile)
 
     def build(self):        
         # create output entity directory
@@ -104,7 +101,7 @@ class CompForm():
                     payload.append([self.payer_name, payee_name, field_dictionary, writer])
 
                 # gen files
-                executor.map(self.parallelWrite, payload)
+                executor.map(self.parallelWrite, payload) 
             except Exception as e:
                 print(str(e))
 
@@ -157,20 +154,29 @@ def ioTask():
     return tasks
 
 def gen():
-    # create w2
+    # create w2 pdf
     tasks = ioTask()
     with concurrent.futures.ProcessPoolExecutor(4) as executor:
         try:  
             for res in executor.map(CompForm.build, tasks): 
                 print(res)
         except Exception as e:
-            print(str(e))  
+            print(str(e))
 
+def toJPEG(path):
+    folders = glob.glob(f'{path}/*/')
+    for folder in folders:
+        shutil.rmtree(f'{folder}/Images')
+        buildPath(f'{folder}/Images')
+        pdf_files = glob.glob(f'{folder}/*.pdf')
+        for file in pdf_files:
+            images = convert_from_path(file, output_folder=f'{folder}/Images/', fmt='jpg')
+            for i in range(len(images)):
+                images[i].save(images[i].filename)
+      
 if __name__ == "__main__":
     start = time.time()
     gen()
     end = time.time()
     print(end - start)
-   
-   
 
