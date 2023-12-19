@@ -18,7 +18,7 @@ class Form940(Form):
         self.output("f940", self.trade_name)
 
     def fieldFormat(self, pNum, offset):
-        return f"f{pNum}_{str(offset).zfill(2)}[0]"
+        return f"f{pNum}_{offset}[0]"
 
     def checkBoxFormat(self, pNum, offset, index):
         return f"c{pNum}_{offset}[{index}]"
