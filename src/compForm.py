@@ -1,4 +1,5 @@
 import os, concurrent.futures, time, glob, shutil
+from pathlib import Path
 import numpy as np
 import pandas as pd
 from constantsCompForm import Constants
@@ -163,20 +164,19 @@ def gen():
         except Exception as e:
             print(str(e))
 
-def toJPEG(path):
+def toImage(path):
     folders = glob.glob(f'{path}/*/')
     for folder in folders:
-        shutil.rmtree(f'{folder}/Images')
         buildPath(f'{folder}/Images')
         pdf_files = glob.glob(f'{folder}/*.pdf')
         for file in pdf_files:
-            images = convert_from_path(file, output_folder=f'{folder}/Images/', fmt='jpg')
-            for i in range(len(images)):
-                images[i].save(images[i].filename)
+            images = convert_from_path(file, fmt='jpg')
+            images[0].save(f'{folder}/Images/{Path(file).name}')
       
 if __name__ == "__main__":
     start = time.time()
     gen()
     end = time.time()
     print(end - start)
+    #toImage("../W2_out")
 
