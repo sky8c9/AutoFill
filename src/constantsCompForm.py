@@ -21,11 +21,11 @@ class FW2(Constants):
     # Name loc
     NAME_LOC = [1, 0]
 
-    # 2023 Tax constants
-    SS_MAX = 160200
+    # 2024 Tax constants
+    SS_MAX = 168600
     SS_RATE = 0.062
     MC_RATE = 0.0145
-    EPSILON = 0.05
+    EPSILON = 0.02
 
 class F1099NEC(Constants):
     # Form info
