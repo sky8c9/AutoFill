@@ -56,9 +56,6 @@ class Form941(Form):
         # Line 12 & 13a
         self.setField(LineLoc.LINE12, [self.reportVal(total_tax), self.reportVal(total_deposit)])
 
-        # Line 13g
-        self.setField(LineLoc.LINE13G, [self.reportVal(total_deposit)])
-
         # Balance due
         self.balanceDue(total_tax - total_deposit)
 
@@ -105,8 +102,11 @@ class Form941(Form):
 
         if tax_balance > 0: # Create payment voucher
             self.setField(LineLoc.LINE14, [self.reportVal(tax_balance)])
-            self.setField(MetaDataLoc.VOUCHER_LOC, [[self.ein], self.reportVal(tax_balance), [self.legal_name], [street], [other]])
-            self.setCheckBox(CheckBoxLoc.PAYMENT_VOUCHER_CHECKBOX, self.quarter, 4)
+            
+            # voucher page is off by 1 (page 3 not 4) - tax year 2024
+            self.setField(MetaDataLoc.VOUCHER_LOC, [[self.ein], self.reportVal(tax_balance), [self.legal_name], [street], [other]], -1)
+            self.setCheckBox(CheckBoxLoc.PAYMENT_VOUCHER_CHECKBOX, self.quarter, 4, -1)
+
         elif tax_balance < 0: # Over payment - Send a refund as default option
             self.setField(LineLoc.LINE15, [self.reportVal(abs(tax_balance))])
             self.setCheckBox(CheckBoxLoc.OVERPAYMENT_CHECKBOX, 2, 2)
